@@ -1,11 +1,6 @@
 Backlog SetOption80 1; ShutterRelay1 1; ShutterMode 2; Interlock OFF; ShutterButton1 2 up 0; ShutterButton1 1 down 0; ShutterCloseDuration1 23; ShutterOpenDuration1 23
 
 
-Rule1 ON Shutter1#Position=0 DO POWER3 OFF ENDON ON Shutter1#Position=100 DO POWER3 ON ENDON
-Rule1 1
-
-
-
 Rule1
 	on system#boot do backlog led1 000000; led2 000000; led3 000000; led4 000000; led5 000000; led6 000000; led7 000000; led8 000000 endon
 	ON Shutter1#Position=0 DO backlog led1 100000; led2 000000; led3 000000; led4 000000; led5 000000; led6 000000; led7 000000; led8 000000 endon
