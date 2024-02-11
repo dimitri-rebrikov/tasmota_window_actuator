@@ -1,6 +1,9 @@
 # Tasmota based window actuator
 This project implements a [tasmota](https://tasmota.github.io) based windows actuator.
+
 The implementation allows steer the window both directly using buttons and remotely over the functionalities provided by tasmota (MQTT, HTTT, Web UI).
+
+In integrate the actuator into my [OpenHab](https://www.openhab.org/) environment, which is also described below.
 
 ## Circuit Diagram
 
@@ -71,3 +74,35 @@ Rule1
 
 Rule1 1
 ```
+
+## Integration Into OpenHab
+
+### OpenHab
+First of all you need a local [OpenHab](https://www.openhab.org/) server.
+
+### MQTT Broker
+The second prerequisite is an MQTT Broker. I installed the [Mosquitto](https://mosquitto.org/)
+
+### Integrate MQTT Broker into OpenHab
+1. Add the MQTT Binding Add-on to you OpenHab
+2. Configure the MQTT Broker connection
+![OpenHab MQQT Broker Connection](OpenHab_MQTT_Broker.png)
+
+### Configure Tasmota to interact with the MQTT Broker
+![Tasmota MQTT Configuration](Tasmota_MQTT_Config.png)
+
+### Integrate the Window Actor over MQQT Broker into OpenHab
+![OpenHab Window Actor integarion](OpenHab_WindowActor_MQTT.png)
+
+Here 2 channels are integrated:
+- Information Channel providing the info about opening status of the window actor
+- Command Channel allowing sending open/close commands
+
+For the command channel a workaround over the Backlog command is used allowing sending tasmota console commands over this channel.
+
+### Use the Windows Actor in the OpenHab rules
+After the connection between OpenHab and the Windows Actor is configured it can be used in the OpenHab rules to react to events like pressing virtual buttons or some other events like, in my case, switching on of the haze extractor hood:
+
+![OpenHab Rule to open the Window on switching on of the Extractor Hood](OpenHabRule_OpenWindow_on_ExtractorOn.png)
+
+Here if the power consumption of the extractor hood over exceeds the specified threshold value the command "UP" is send to the `cmnd/fensterug/Backlog` topic of the Windows Actor resulting the opening of the window.
